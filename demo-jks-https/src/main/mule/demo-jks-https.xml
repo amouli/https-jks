@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e82acc1d-f8f3-4111-9139-912ac98ec458" >
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="443" >
+			<tls:context >
+				<tls:key-store type="jks" path="kafka1-service.jks" alias="mule" keyPassword="changeme" password="changeme" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<flow name="demo-jks-httpsFlow" doc:id="8dffcf71-8125-46e1-a116-f8a585c4489e" >
+		<http:listener doc:name="Listener" doc:id="8bd3fbb5-bf87-4cd0-99ac-716be2ef97d7" config-ref="HTTP_Listener_config" path="/tls"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="79eaf5c2-1890-4670-ac71-4a52b7646e0f" />
+		<logger level="INFO" doc:name="Logger" doc:id="88bfaf2f-07bd-4832-af51-6311e1030a60" message="#[payload]"/>
+	</flow>
+</mule>
